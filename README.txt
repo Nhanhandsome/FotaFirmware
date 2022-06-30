@@ -42,7 +42,7 @@ FOTA Struct:
 	Endline(1 byte): 0x0A
 	
 	
-	Head|CMD |Length	|                 Data  				 	|Checksum|Endline
+	Head|CMD |Length	|                 Data  		    |Checksum    |Endline
 Ex:	0x7E|0x02|0x00 0x2B	|:1000000000200020B5280008E5260008EB2600089F|		 |0x0A
 
 
