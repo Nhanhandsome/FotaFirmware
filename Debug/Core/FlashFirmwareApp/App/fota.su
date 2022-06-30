@@ -1,0 +1,6 @@
+../Core/FlashFirmwareApp/App/fota.c:80:6:fota_init	16	static
+../Core/FlashFirmwareApp/App/fota.c:85:6:fota_set_satus	16	static
+../Core/FlashFirmwareApp/App/fota.c:88:15:fota_get_status	16	static
+../Core/FlashFirmwareApp/App/fota.c:92:6:fota_poll	544	static
+../Core/FlashFirmwareApp/App/fota.c:140:9:fota_process	40	static
+../Core/FlashFirmwareApp/App/fota.c:156:10:fota_checksum	24	static

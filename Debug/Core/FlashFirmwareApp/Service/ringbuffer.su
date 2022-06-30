@@ -1,0 +1,4 @@
+../Core/FlashFirmwareApp/Service/ringbuffer.c:10:6:ring_init	16	static
+../Core/FlashFirmwareApp/Service/ringbuffer.c:17:6:ring_deinit	16	static
+../Core/FlashFirmwareApp/Service/ringbuffer.c:20:6:ring_push_head	24	static
+../Core/FlashFirmwareApp/Service/ringbuffer.c:31:6:ring_pop_tail	16	static
