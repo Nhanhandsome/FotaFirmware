@@ -30,6 +30,7 @@ typedef enum{
 	FOTA_ST_PROCESS,
 	FOTA_ST_SUCCESS,
 	FOTA_ST_END,
+	FOTA_ST_ERROR
 }FOTA_STATUS_t;
 typedef enum{
 	FOTA_GET_VERSION = 0,

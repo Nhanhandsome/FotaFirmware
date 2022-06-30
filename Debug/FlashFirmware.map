@@ -319,38 +319,44 @@ Discarded input sections
  .group         0x0000000000000000        0xc ./Core/FlashFirmwareApp/App/fota.o
  .group         0x0000000000000000        0xc ./Core/FlashFirmwareApp/App/fota.o
  .group         0x0000000000000000        0xc ./Core/FlashFirmwareApp/App/fota.o
+ .group         0x0000000000000000        0xc ./Core/FlashFirmwareApp/App/fota.o
+ .group         0x0000000000000000        0xc ./Core/FlashFirmwareApp/App/fota.o
+ .group         0x0000000000000000        0xc ./Core/FlashFirmwareApp/App/fota.o
  .text          0x0000000000000000        0x0 ./Core/FlashFirmwareApp/App/fota.o
  .data          0x0000000000000000        0x0 ./Core/FlashFirmwareApp/App/fota.o
  .bss           0x0000000000000000        0x0 ./Core/FlashFirmwareApp/App/fota.o
  .bss.fota_buffer
-                0x0000000000000000      0x100 ./Core/FlashFirmwareApp/App/fota.o
+                0x0000000000000000       0x32 ./Core/FlashFirmwareApp/App/fota.o
  .data.fota     0x0000000000000000      0x2a8 ./Core/FlashFirmwareApp/App/fota.o
  .rodata.aucCRCHi
                 0x0000000000000000      0x100 ./Core/FlashFirmwareApp/App/fota.o
  .rodata.aucCRCLo
                 0x0000000000000000      0x100 ./Core/FlashFirmwareApp/App/fota.o
+ .text.fota_checksum
+                0x0000000000000000       0x8c ./Core/FlashFirmwareApp/App/fota.o
  .text.fota_init
                 0x0000000000000000       0x36 ./Core/FlashFirmwareApp/App/fota.o
  .text.fota_set_satus
                 0x0000000000000000       0x22 ./Core/FlashFirmwareApp/App/fota.o
  .text.fota_get_status
                 0x0000000000000000       0x18 ./Core/FlashFirmwareApp/App/fota.o
+ .rodata        0x0000000000000000        0x5 ./Core/FlashFirmwareApp/App/fota.o
  .text.fota_poll
-                0x0000000000000000      0x148 ./Core/FlashFirmwareApp/App/fota.o
+                0x0000000000000000      0x15c ./Core/FlashFirmwareApp/App/fota.o
  .rodata.fota_poll
-                0x0000000000000000       0x14 ./Core/FlashFirmwareApp/App/fota.o
+                0x0000000000000000       0x18 ./Core/FlashFirmwareApp/App/fota.o
+ .text.fota_flash_firmware
+                0x0000000000000000       0x4c ./Core/FlashFirmwareApp/App/fota.o
  .text.fota_process
                 0x0000000000000000       0xe8 ./Core/FlashFirmwareApp/App/fota.o
- .text.fota_checksum
-                0x0000000000000000       0x8c ./Core/FlashFirmwareApp/App/fota.o
  .text.fota_data_is_comming
                 0x0000000000000000       0x68 ./Core/FlashFirmwareApp/App/fota.o
- .debug_info    0x0000000000000000      0x6bd ./Core/FlashFirmwareApp/App/fota.o
- .debug_abbrev  0x0000000000000000      0x241 ./Core/FlashFirmwareApp/App/fota.o
+ .debug_info    0x0000000000000000      0x7c5 ./Core/FlashFirmwareApp/App/fota.o
+ .debug_abbrev  0x0000000000000000      0x24f ./Core/FlashFirmwareApp/App/fota.o
  .debug_aranges
-                0x0000000000000000       0x50 ./Core/FlashFirmwareApp/App/fota.o
- .debug_ranges  0x0000000000000000       0x40 ./Core/FlashFirmwareApp/App/fota.o
- .debug_macro   0x0000000000000000      0x26f ./Core/FlashFirmwareApp/App/fota.o
+                0x0000000000000000       0x58 ./Core/FlashFirmwareApp/App/fota.o
+ .debug_ranges  0x0000000000000000       0x48 ./Core/FlashFirmwareApp/App/fota.o
+ .debug_macro   0x0000000000000000      0x2a8 ./Core/FlashFirmwareApp/App/fota.o
  .debug_macro   0x0000000000000000      0xa4e ./Core/FlashFirmwareApp/App/fota.o
  .debug_macro   0x0000000000000000       0x22 ./Core/FlashFirmwareApp/App/fota.o
  .debug_macro   0x0000000000000000       0x4c ./Core/FlashFirmwareApp/App/fota.o
@@ -394,10 +400,13 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x29 ./Core/FlashFirmwareApp/App/fota.o
  .debug_macro   0x0000000000000000       0x22 ./Core/FlashFirmwareApp/App/fota.o
  .debug_macro   0x0000000000000000       0x10 ./Core/FlashFirmwareApp/App/fota.o
- .debug_line    0x0000000000000000      0x852 ./Core/FlashFirmwareApp/App/fota.o
- .debug_str     0x0000000000000000     0x812a ./Core/FlashFirmwareApp/App/fota.o
+ .debug_macro   0x0000000000000000      0x19b ./Core/FlashFirmwareApp/App/fota.o
+ .debug_macro   0x0000000000000000       0x4c ./Core/FlashFirmwareApp/App/fota.o
+ .debug_macro   0x0000000000000000       0x3a ./Core/FlashFirmwareApp/App/fota.o
+ .debug_line    0x0000000000000000      0x8ae ./Core/FlashFirmwareApp/App/fota.o
+ .debug_str     0x0000000000000000     0x8c07 ./Core/FlashFirmwareApp/App/fota.o
  .comment       0x0000000000000000       0x51 ./Core/FlashFirmwareApp/App/fota.o
- .debug_frame   0x0000000000000000       0xf0 ./Core/FlashFirmwareApp/App/fota.o
+ .debug_frame   0x0000000000000000      0x110 ./Core/FlashFirmwareApp/App/fota.o
  .ARM.attributes
                 0x0000000000000000       0x2c ./Core/FlashFirmwareApp/App/fota.o
  .group         0x0000000000000000        0xc ./Core/FlashFirmwareApp/App/fota_event.o
@@ -695,7 +704,7 @@ Discarded input sections
  .debug_aranges
                 0x0000000000000000       0x20 ./Core/FlashFirmwareApp/Service/debug.o
  .debug_ranges  0x0000000000000000       0x10 ./Core/FlashFirmwareApp/Service/debug.o
- .debug_macro   0x0000000000000000      0x22b ./Core/FlashFirmwareApp/Service/debug.o
+ .debug_macro   0x0000000000000000      0x225 ./Core/FlashFirmwareApp/Service/debug.o
  .debug_macro   0x0000000000000000      0xa4e ./Core/FlashFirmwareApp/Service/debug.o
  .debug_macro   0x0000000000000000       0x22 ./Core/FlashFirmwareApp/Service/debug.o
  .debug_macro   0x0000000000000000       0x4c ./Core/FlashFirmwareApp/Service/debug.o
@@ -738,7 +747,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x16 ./Core/FlashFirmwareApp/Service/debug.o
  .debug_macro   0x0000000000000000       0x20 ./Core/FlashFirmwareApp/Service/debug.o
  .debug_line    0x0000000000000000      0x5d6 ./Core/FlashFirmwareApp/Service/debug.o
- .debug_str     0x0000000000000000     0x75e6 ./Core/FlashFirmwareApp/Service/debug.o
+ .debug_str     0x0000000000000000     0x75c5 ./Core/FlashFirmwareApp/Service/debug.o
  .comment       0x0000000000000000       0x51 ./Core/FlashFirmwareApp/Service/debug.o
  .debug_frame   0x0000000000000000       0x30 ./Core/FlashFirmwareApp/Service/debug.o
  .ARM.attributes

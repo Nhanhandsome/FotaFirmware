@@ -6,7 +6,8 @@
  */
 
 #include "fota.h"
-
+#include "intelhex.h"
+#include "debug.h"
 /*method*/
 void fota_poll(fota_class *p_fota);
 uint8_t fota_process(fota_class *p_fota, uint8_t *data, uint16_t length);
@@ -14,8 +15,9 @@ uint16_t fota_checksum(uint8_t *data, uint16_t length);
 void fota_set_satus(fota_class *p_fota, FOTA_STATUS_t status);
 FOTA_STATUS_t fota_get_status(fota_class *p_fota);
 void fota_init(fota_class *p_fota);
+uint8_t fota_flash_firmware(fota_class *p_fota);
 /*end method*/
-uint8_t fota_buffer[256];
+uint8_t fota_buffer[50];
 /*varialble*/
 
 fota_class fota =
@@ -68,7 +70,24 @@ static const uint8_t aucCRCLo[] = { 0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02,
 		0x98, 0x88, 0x48, 0x49, 0x89, 0x4B, 0x8B, 0x8A, 0x4A, 0x4E, 0x8E, 0x8F,
 		0x4F, 0x8D, 0x4D, 0x4C, 0x8C, 0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46,
 		0x86, 0x82, 0x42, 0x43, 0x83, 0x41, 0x81, 0x80, 0x40 };
+/**
+ *
+ */
+uint16_t fota_checksum(uint8_t *data, uint16_t length) {
+	uint8_t ucCRCHi = 0xFF;
+	uint8_t ucCRCLo = 0xFF;
+	int iIndex;
 
+	while (length--) {
+		iIndex = ucCRCLo ^ *(data++);
+		ucCRCLo = (uint8_t) (ucCRCHi ^ aucCRCHi[iIndex]);
+		ucCRCHi = aucCRCLo[iIndex];
+	}
+	return (uint16_t) (ucCRCHi << 8 | ucCRCLo);
+}
+/**
+ *
+ */
 void fota_init(fota_class *p_fota) {
 	ring_init(&p_fota->fota_fifo, MAX_RING_BUFFER);
 	fota_event_creat(&p_fota->event);
@@ -85,56 +104,76 @@ FOTA_STATUS_t fota_get_status(fota_class *p_fota) {
 
 void fota_poll(fota_class *p_fota) {
 	fota_event_t event = fota_no_message;
-	if(fota_event_pop_tail(&p_fota->event,&event) == true)
-	if (event == fota_new_message) {
-		uint8_t data[512];
-		uint16_t p_data = 0;
-		while (1) {
-			if (ring_pop_tail(&p_fota->fota_fifo, data + p_data) == true && data[0] == FOTA_HEAD) {
-				p_data++;
+	if (fota_event_pop_tail(&p_fota->event, &event) == true)
+		if (event == fota_new_message) {
+			uint8_t data[512];
+			uint16_t p_data = 0;
+			while (1) {
+				if (ring_pop_tail(&p_fota->fota_fifo, data + p_data) == true
+						&& data[0] == FOTA_HEAD) {
+					p_data++;
+				}
+				if (data[p_data - 1] == '\n' && data[p_data - 2] == '\r') {
+					break;
+				}
 			}
-			if(data[p_data-1] == '\n' && data[p_data-2] == '\r'){
-				break;
-			}
-		}
-		if (p_fota->process(p_fota, data, p_data) == 1) {
-			switch (p_fota->commands.commands) {
-			case FOTA_GET_VERSION:
+			if (p_fota->process(p_fota, data, p_data) == 1) {
+				debug_printf("%s\r\n", p_fota->commands.data);
+				switch (p_fota->commands.commands) {
+				case FOTA_GET_VERSION:
 
-				break;
-			case FOTA_START:
-				p_fota->set_satus(p_fota, FOTA_ST_BEGIN);
-				break;
-			case FOTA_WRITE:
-				break;
-			default:
-				break;
+					break;
+				case FOTA_START:
+					if (p_fota->get_status(p_fota) == FOTA_ST_IDLE)
+						p_fota->set_satus(p_fota, FOTA_ST_BEGIN);
+					break;
+				case FOTA_WRITE:
+					if (p_fota->get_status(p_fota) == FOTA_ST_BEGIN)
+						p_fota->set_satus(p_fota, FOTA_ST_PROCESS);
+					break;
+				default:
+					break;
+				}
 			}
-		}
 
-	}
+		}
 	switch (p_fota->get_status(p_fota)) {
 	case FOTA_ST_IDLE:
-
 		break;
 	case FOTA_ST_BEGIN:
-		p_fota->set_satus(p_fota, FOTA_ST_PROCESS);
 		break;
 	case FOTA_ST_PROCESS:
-
+		if (fota_flash_firmware(p_fota) == 0) {
+			p_fota->set_satus(p_fota, FOTA_ST_ERROR);
+		} else {
+			p_fota->set_satus(p_fota, FOTA_ST_SUCCESS);
+		}
 		break;
 	case FOTA_ST_SUCCESS:
-
+		p_fota->set_satus(p_fota, FOTA_ST_BEGIN);
 		break;
 	case FOTA_ST_END:
 
+		break;
+	case FOTA_ST_ERROR:
 		break;
 	default:
 		break;
 	}
 
 }
-
+uint8_t fota_flash_firmware(fota_class *p_fota) {
+	intel_hex *p_hex_data;
+	p_hex_data = intel_hex_process(p_fota->commands.data,
+			p_fota->commands.byte_count.haftword);
+	if (p_hex_data == NULL) {
+		free(p_hex_data);
+		return 0;
+	} else {
+		free(p_hex_data);
+		return 1;
+	}
+}
 uint8_t fota_process(fota_class *p_fota, uint8_t *data, uint16_t length) {
 	p_fota->commands.checksum.byte[0] = data[length - 2];
 	p_fota->commands.checksum.byte[0] = data[length - 1];
@@ -151,26 +190,14 @@ uint8_t fota_process(fota_class *p_fota, uint8_t *data, uint16_t length) {
 	p_fota->commands.data = fota_buffer;
 	return 1;
 }
-uint16_t fota_checksum(uint8_t *data, uint16_t length) {
-	uint8_t ucCRCHi = 0xFF;
-	uint8_t ucCRCLo = 0xFF;
-	int iIndex;
 
-	while (length--) {
-		iIndex = ucCRCLo ^ *(data++);
-		ucCRCLo = (uint8_t) (ucCRCHi ^ aucCRCHi[iIndex]);
-		ucCRCHi = aucCRCLo[iIndex];
-	}
-	return (uint16_t) (ucCRCHi << 8 | ucCRCLo);
-}
-
-
-void fota_data_is_comming(fota_class *p_fota,uint8_t data){
-	if(data == FOTA_HEAD) p_fota->is_push_fifo = 1;
-	if(p_fota->is_push_fifo == 1)
-		ring_push_head(&p_fota->fota_fifo,data);
-	if(p_fota->last_data == '\r' && data == '\n'){
-		fota_event_push_head(&p_fota->event,fota_new_message);
+void fota_data_is_comming(fota_class *p_fota, uint8_t data) {
+	if (data == FOTA_HEAD)
+		p_fota->is_push_fifo = 1;
+	if (p_fota->is_push_fifo == 1)
+		ring_push_head(&p_fota->fota_fifo, data);
+	if (p_fota->last_data == '\r' && data == '\n') {
+		fota_event_push_head(&p_fota->event, fota_new_message);
 		p_fota->is_push_fifo = 0;
 	}
 	p_fota->last_data = data;

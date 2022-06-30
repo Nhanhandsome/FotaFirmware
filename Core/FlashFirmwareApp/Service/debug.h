@@ -14,9 +14,7 @@
 #include "config.h"
 #include "string.h"
 
-#define DEBUG(x,...) debug_printf(x,...)
 
-//__weak void debug_printf(const char* format,...);
 
 #ifdef DEBUG
 void debug_printf(const char* format,...);
