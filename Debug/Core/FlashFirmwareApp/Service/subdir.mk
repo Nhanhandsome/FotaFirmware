@@ -5,18 +5,21 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/FlashFirmwareApp/Service/debug.c \
 ../Core/FlashFirmwareApp/Service/fota_struct.c \
 ../Core/FlashFirmwareApp/Service/intelhex.c \
 ../Core/FlashFirmwareApp/Service/ringbuffer.c \
 ../Core/FlashFirmwareApp/Service/utils.c 
 
 OBJS += \
+./Core/FlashFirmwareApp/Service/debug.o \
 ./Core/FlashFirmwareApp/Service/fota_struct.o \
 ./Core/FlashFirmwareApp/Service/intelhex.o \
 ./Core/FlashFirmwareApp/Service/ringbuffer.o \
 ./Core/FlashFirmwareApp/Service/utils.o 
 
 C_DEPS += \
+./Core/FlashFirmwareApp/Service/debug.d \
 ./Core/FlashFirmwareApp/Service/fota_struct.d \
 ./Core/FlashFirmwareApp/Service/intelhex.d \
 ./Core/FlashFirmwareApp/Service/ringbuffer.d \
@@ -30,7 +33,7 @@ Core/FlashFirmwareApp/Service/%.o Core/FlashFirmwareApp/Service/%.su: ../Core/Fl
 clean: clean-Core-2f-FlashFirmwareApp-2f-Service
 
 clean-Core-2f-FlashFirmwareApp-2f-Service:
-	-$(RM) ./Core/FlashFirmwareApp/Service/fota_struct.d ./Core/FlashFirmwareApp/Service/fota_struct.o ./Core/FlashFirmwareApp/Service/fota_struct.su ./Core/FlashFirmwareApp/Service/intelhex.d ./Core/FlashFirmwareApp/Service/intelhex.o ./Core/FlashFirmwareApp/Service/intelhex.su ./Core/FlashFirmwareApp/Service/ringbuffer.d ./Core/FlashFirmwareApp/Service/ringbuffer.o ./Core/FlashFirmwareApp/Service/ringbuffer.su ./Core/FlashFirmwareApp/Service/utils.d ./Core/FlashFirmwareApp/Service/utils.o ./Core/FlashFirmwareApp/Service/utils.su
+	-$(RM) ./Core/FlashFirmwareApp/Service/debug.d ./Core/FlashFirmwareApp/Service/debug.o ./Core/FlashFirmwareApp/Service/debug.su ./Core/FlashFirmwareApp/Service/fota_struct.d ./Core/FlashFirmwareApp/Service/fota_struct.o ./Core/FlashFirmwareApp/Service/fota_struct.su ./Core/FlashFirmwareApp/Service/intelhex.d ./Core/FlashFirmwareApp/Service/intelhex.o ./Core/FlashFirmwareApp/Service/intelhex.su ./Core/FlashFirmwareApp/Service/ringbuffer.d ./Core/FlashFirmwareApp/Service/ringbuffer.o ./Core/FlashFirmwareApp/Service/ringbuffer.su ./Core/FlashFirmwareApp/Service/utils.d ./Core/FlashFirmwareApp/Service/utils.o ./Core/FlashFirmwareApp/Service/utils.su
 
 .PHONY: clean-Core-2f-FlashFirmwareApp-2f-Service
 

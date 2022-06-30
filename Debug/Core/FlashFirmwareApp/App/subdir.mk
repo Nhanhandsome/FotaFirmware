@@ -6,15 +6,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Core/FlashFirmwareApp/App/flash_firmware.c \
-../Core/FlashFirmwareApp/App/fota.c 
+../Core/FlashFirmwareApp/App/fota.c \
+../Core/FlashFirmwareApp/App/fota_event.c 
 
 OBJS += \
 ./Core/FlashFirmwareApp/App/flash_firmware.o \
-./Core/FlashFirmwareApp/App/fota.o 
+./Core/FlashFirmwareApp/App/fota.o \
+./Core/FlashFirmwareApp/App/fota_event.o 
 
 C_DEPS += \
 ./Core/FlashFirmwareApp/App/flash_firmware.d \
-./Core/FlashFirmwareApp/App/fota.d 
+./Core/FlashFirmwareApp/App/fota.d \
+./Core/FlashFirmwareApp/App/fota_event.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -24,7 +27,7 @@ Core/FlashFirmwareApp/App/%.o Core/FlashFirmwareApp/App/%.su: ../Core/FlashFirmw
 clean: clean-Core-2f-FlashFirmwareApp-2f-App
 
 clean-Core-2f-FlashFirmwareApp-2f-App:
-	-$(RM) ./Core/FlashFirmwareApp/App/flash_firmware.d ./Core/FlashFirmwareApp/App/flash_firmware.o ./Core/FlashFirmwareApp/App/flash_firmware.su ./Core/FlashFirmwareApp/App/fota.d ./Core/FlashFirmwareApp/App/fota.o ./Core/FlashFirmwareApp/App/fota.su
+	-$(RM) ./Core/FlashFirmwareApp/App/flash_firmware.d ./Core/FlashFirmwareApp/App/flash_firmware.o ./Core/FlashFirmwareApp/App/flash_firmware.su ./Core/FlashFirmwareApp/App/fota.d ./Core/FlashFirmwareApp/App/fota.o ./Core/FlashFirmwareApp/App/fota.su ./Core/FlashFirmwareApp/App/fota_event.d ./Core/FlashFirmwareApp/App/fota_event.o ./Core/FlashFirmwareApp/App/fota_event.su
 
 .PHONY: clean-Core-2f-FlashFirmwareApp-2f-App
 
