@@ -109,6 +109,8 @@ void fota_poll(fota_class *p_fota) {
 					case FOTA_START:
 						p_fota->set_satus(p_fota,FOTA_ST_BEGIN);
 						break;
+					case FOTA_WRITE:
+						break;
 					default:
 						break;
 				}
