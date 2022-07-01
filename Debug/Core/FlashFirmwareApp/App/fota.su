@@ -5,5 +5,4 @@
 ../Core/FlashFirmwareApp/App/fota.c:110:5:fota_poll	544	static
 ../Core/FlashFirmwareApp/App/fota.c:179:9:fota_flash_firmware	40	static
 ../Core/FlashFirmwareApp/App/fota.c:229:9:fota_process	40	static
-../Core/FlashFirmwareApp/App/fota.c:246:6:fota_data_is_comming	16	static
-../Core/FlashFirmwareApp/App/fota.c:259:6:fota_input_callback	32	static
+../Core/FlashFirmwareApp/App/fota.c:248:6:fota_data_is_comming	16	static

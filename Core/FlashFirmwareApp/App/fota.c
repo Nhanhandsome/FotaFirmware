@@ -243,6 +243,8 @@ uint8_t fota_process(fota_class *p_fota, uint8_t *data, uint16_t length) {
 	return 1;
 }
 
+// FOTA input data method
+
 void fota_data_is_comming(fota_class *p_fota, uint8_t data) {
 	if (data == FOTA_HEAD)
 		p_fota->is_push_fifo = 1;
@@ -254,11 +256,6 @@ void fota_data_is_comming(fota_class *p_fota, uint8_t data) {
 	}
 	p_fota->last_data = data;
 }
-// FOTA input data method
 
-void fota_input_callback(fota_class *p_fota){
-	uint8_t data = fota_read_data();
-	fota_data_is_comming(p_fota, data);
-}
 
 
