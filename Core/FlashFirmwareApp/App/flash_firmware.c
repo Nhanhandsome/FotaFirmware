@@ -8,7 +8,7 @@
 #include <config.h>
 #include <flash_firmware.h>
 #include "ringbuffer.h"
-
+#include "fota.h"
 Ring_Buffer_t firmware_buffer;
 
 uint16_t firmware_size = 1024;
@@ -26,7 +26,14 @@ uint8_t check_new_firmware() {
 }
 void flash_firmware_process() {
 	if (check_new_firmware() == 1) {
-
+		fota_init(&fota);
+		int result = fota.poll(&fota);
+		if(result == 2){
+			checkout_firmware(app_firmware);
+		}
+		else if(result == -1){
+			checkout_firmware(factory_firmware);
+		}
 	}
 	else if(check_new_firmware() == 2){
 		checkout_firmware(factory_firmware);

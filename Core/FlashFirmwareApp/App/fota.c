@@ -8,21 +8,21 @@
 #include "fota.h"
 #include "intelhex.h"
 #include "debug.h"
+#include "flash.h"
+#include "flash_firmware.h"
 /*method*/
-void fota_poll(fota_class *p_fota);
+int fota_poll(fota_class *p_fota);
 uint8_t fota_process(fota_class *p_fota, uint8_t *data, uint16_t length);
 uint16_t fota_checksum(uint8_t *data, uint16_t length);
 void fota_set_satus(fota_class *p_fota, FOTA_STATUS_t status);
 FOTA_STATUS_t fota_get_status(fota_class *p_fota);
-void fota_init(fota_class *p_fota);
+void fota_data_is_comming(fota_class *p_fota,uint8_t data);
 uint8_t fota_flash_firmware(fota_class *p_fota);
 /*end method*/
 uint8_t fota_buffer[50];
 /*varialble*/
 
-fota_class fota =
-		{ .status = FOTA_ST_IDLE, .get_status = fota_get_status, .poll =
-				fota_poll, .process = fota_process, .set_satus = fota_set_satus };
+fota_class fota;
 /*end variable*/
 
 static const uint8_t aucCRCHi[] = { 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
@@ -89,6 +89,11 @@ uint16_t fota_checksum(uint8_t *data, uint16_t length) {
  *
  */
 void fota_init(fota_class *p_fota) {
+	p_fota->status = FOTA_ST_IDLE;
+	p_fota->get_status = fota_get_status;
+	p_fota->poll = fota_poll;
+	p_fota->process = fota_process;
+	p_fota->set_satus = fota_set_satus;
 	ring_init(&p_fota->fota_fifo, MAX_RING_BUFFER);
 	fota_event_creat(&p_fota->event);
 	p_fota->is_push_fifo = 0;
@@ -102,7 +107,8 @@ FOTA_STATUS_t fota_get_status(fota_class *p_fota) {
 	return p_fota->status;
 }
 
-void fota_poll(fota_class *p_fota) {
+int fota_poll(fota_class *p_fota) {
+	int result = 1;
 	fota_event_t event = fota_no_message;
 	if (fota_event_pop_tail(&p_fota->event, &event) == true)
 		if (event == fota_new_message) {
@@ -118,7 +124,7 @@ void fota_poll(fota_class *p_fota) {
 				}
 			}
 			if (p_fota->process(p_fota, data, p_data) == 1) {
-				debug_printf("%s\r\n", p_fota->commands.data);
+				//debug_printf("%s\r\n", p_fota->commands.data);
 				switch (p_fota->commands.commands) {
 				case FOTA_GET_VERSION:
 
@@ -145,32 +151,78 @@ void fota_poll(fota_class *p_fota) {
 	case FOTA_ST_PROCESS:
 		if (fota_flash_firmware(p_fota) == 0) {
 			p_fota->set_satus(p_fota, FOTA_ST_ERROR);
-		} else {
+		} else if(fota_flash_firmware(p_fota) == 1) {
 			p_fota->set_satus(p_fota, FOTA_ST_SUCCESS);
+		}
+		else{
+			p_fota->set_satus(p_fota, FOTA_ST_END);
 		}
 		break;
 	case FOTA_ST_SUCCESS:
 		p_fota->set_satus(p_fota, FOTA_ST_BEGIN);
 		break;
 	case FOTA_ST_END:
-
+		result = 2;
 		break;
 	case FOTA_ST_ERROR:
+		result = -1;
 		break;
 	default:
 		break;
 	}
 
+	if(result == 1){
+		return fota_poll(p_fota);
+	}
+	return result;
 }
 uint8_t fota_flash_firmware(fota_class *p_fota) {
+	static uint32_t addr_write;
+	uint32_t data_write;
 	intel_hex *p_hex_data;
-	p_hex_data = intel_hex_process(p_fota->commands.data,
-			p_fota->commands.byte_count.haftword);
+	uint16_t length = byte_to_hardword((uint8_t*)p_fota->commands.byte_count.byte);
+	uint8_t *p_data_line = string_to_hex((char*)p_fota->commands.data,length);
+	p_hex_data = intel_hex_process(p_data_line,length);
 	if (p_hex_data == NULL) {
-		free(p_hex_data);
 		return 0;
 	} else {
-		free(p_hex_data);
+		switch (p_hex_data->record_type) {
+			case Data_rec:
+				addr_write += (uint32_t) byte_to_hardword(p_hex_data->addr);
+				/*Flash write*/
+				for(uint16_t i = 0;i<4;i++){
+					data_write = byte_to_word_cr(p_hex_data->data+i*4);
+					addr_write=addr_write + i*4;
+					flash_write(addr_write, data_write);
+					if(flash_read(addr_write) != data_write){
+						return 0;
+					}
+				}
+				break;
+			case EndFile_rec:
+				/*Flash Lock*/
+				flash_lock();
+				return 2;
+				break;
+			case Extended_Segment_Address_rec:
+
+				break;
+			case Start_Segment_Address_rec:
+
+				break;
+			case Extended_Linear_Address_rec:
+				addr_write = (uint32_t) byte_to_hardword(p_hex_data->data)<<16 |(uint32_t) byte_to_hardword(p_hex_data->addr);
+				/*Unlock Flash*/
+				flash_unlock();
+				/*Erase Flash*/
+				flash_erase(addr_write,5);
+				break;
+			case Start_Linear_Address_rec:
+
+				break;
+			default:
+				break;
+		}
 		return 1;
 	}
 }
@@ -202,3 +254,11 @@ void fota_data_is_comming(fota_class *p_fota, uint8_t data) {
 	}
 	p_fota->last_data = data;
 }
+// FOTA input data method
+
+void fota_input_callback(fota_class *p_fota){
+	uint8_t data = fota_read_data();
+	fota_data_is_comming(p_fota, data);
+}
+
+

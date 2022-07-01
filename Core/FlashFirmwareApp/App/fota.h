@@ -22,13 +22,13 @@ struct fota_class_t{
 	Ring_Buffer_t fota_fifo;
 	FOTA_STATUS_t status;
 	fota_cmd commands;
-	void (*poll)(fota_class *p_fota);
+	int (*poll)(fota_class *p_fota);
 	uint8_t (*process)(fota_class *p_fota,uint8_t* data,uint16_t length);
 	void (*set_satus)(fota_class *p_fota,FOTA_STATUS_t status);
 	FOTA_STATUS_t (*get_status)(fota_class *p_fota);
 };
-
-void fota_data_is_comming(fota_class *p_fota,uint8_t data);
+void fota_init(fota_class *p_fota);
+uint8_t fota_read_data();
 
 extern fota_class fota;
 

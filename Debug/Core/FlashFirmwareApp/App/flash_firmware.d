@@ -33,7 +33,11 @@ Core/FlashFirmwareApp/App/flash_firmware.o: \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_pwr_ex.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h \
- C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/ringbuffer.h
+ C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/ringbuffer.h \
+ ../Core/FlashFirmwareApp/App/fota.h \
+ C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/fota_struct.h \
+ C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/utils.h \
+ ../Core/FlashFirmwareApp/App/fota_event.h
 C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/config.h:
 C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/App/flash_firmware.h:
 C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/intelhex.h:
@@ -68,3 +72,7 @@ C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/Fla
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h:
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h:
 C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/ringbuffer.h:
+../Core/FlashFirmwareApp/App/fota.h:
+C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/fota_struct.h:
+C:/Users/Admin/STM32CubeIDE/workspace_1.9.0/FlashFirmware/FlashFirmware/Core/FlashFirmwareApp/Service/utils.h:
+../Core/FlashFirmwareApp/App/fota_event.h:

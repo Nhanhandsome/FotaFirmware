@@ -35,4 +35,5 @@ bool fota_event_pop_tail(fota_event_queue_handle *p_fota_event, fota_event_t* da
 
 
 
+
 #endif /* FLASHFIRMWAREAPP_APP_FOTA_EVENT_H_ */

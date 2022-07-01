@@ -24,6 +24,7 @@ typedef union{
 }haftword_to_byte_t;
 
 uint8_t* string_to_hex(char* data, uint16_t length);
-
-
+uint16_t byte_to_hardword(uint8_t* src);
+uint32_t byte_to_word(uint8_t* src);
+uint32_t byte_to_word_cr(uint8_t* src);
 #endif /* FLASHFIRMWAREAPP_SERVICE_UTILS_H_ */

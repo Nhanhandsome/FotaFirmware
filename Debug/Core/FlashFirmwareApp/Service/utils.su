@@ -1,2 +1,5 @@
 ../Core/FlashFirmwareApp/Service/utils.c:13:9:byte_to_hex	24	static
 ../Core/FlashFirmwareApp/Service/utils.c:29:10:string_to_hex	48	static
+../Core/FlashFirmwareApp/Service/utils.c:50:10:byte_to_hardword	16	static
+../Core/FlashFirmwareApp/Service/utils.c:53:10:byte_to_word	24	static
+../Core/FlashFirmwareApp/Service/utils.c:60:10:byte_to_word_cr	24	static
