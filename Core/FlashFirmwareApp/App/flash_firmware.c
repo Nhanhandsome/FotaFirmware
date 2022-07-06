@@ -27,7 +27,7 @@ uint8_t check_new_firmware() {
 void flash_firmware_process() {
 	if (check_new_firmware() == 1) {
 		fota_init(&fota);
-		int result = fota.poll(&fota);
+		int result = fota_poll(&fota);
 		if(result == 2){
 			checkout_firmware(app_firmware);
 		}

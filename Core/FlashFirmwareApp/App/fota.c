@@ -10,8 +10,7 @@
 #include "debug.h"
 #include "flash.h"
 #include "flash_firmware.h"
-/*method*/
-int fota_poll(fota_class *p_fota);
+
 uint8_t fota_process(fota_class *p_fota, uint8_t *data, uint16_t length);
 uint16_t fota_checksum(uint8_t *data, uint16_t length);
 void fota_set_satus(fota_class *p_fota, FOTA_STATUS_t status);
@@ -99,7 +98,6 @@ void fota_init(fota_class *p_fota) {
 	p_fota->is_push_fifo = 0;
 	p_fota->last_data = 0;
 }
-
 void fota_set_satus(fota_class *p_fota, FOTA_STATUS_t status) {
 	p_fota->status = status;
 }
@@ -170,7 +168,6 @@ int fota_poll(fota_class *p_fota) {
 	default:
 		break;
 	}
-
 	if(result == 1){
 		return fota_poll(p_fota);
 	}
