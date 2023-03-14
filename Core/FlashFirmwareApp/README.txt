@@ -4,7 +4,7 @@ Flash firmware
 the device include: 
 
 1. Bootloader: Chọn chương trình thực thi
-2. Flash firmware: Update chương trình mới, factory firmware went error
+2. Flash firmware: Update chương trình mới, factory firmware when error
 3. App main: Chương trình chính.
 4. Factory app: chương trình sau khi xuất kho
 5. Stoge (memory): lưu trữ dữ liệu, chương trình mới khi có bản update.
